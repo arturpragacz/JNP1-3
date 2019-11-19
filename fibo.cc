@@ -4,3 +4,5 @@
 void Fibo::normalize() {
 
 }
+
+int main(){}
