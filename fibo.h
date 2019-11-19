@@ -4,6 +4,7 @@
 #include <boost/dynamic_bitset.hpp>
 #include <boost/operators.hpp>
 #include <utility>
+#include <string>
 
 class Fibo: boost::addable<Fibo>, boost::andable<Fibo>, boost::orable<Fibo>, boost::xorable<Fibo>,
             boost::left_shiftable<Fibo>, boost::less_than_comparable<Fibo>, boost::equality_comparable<Fibo> {
@@ -84,7 +85,11 @@ public:
 		return data.size();
 	}
 
-	Fibo(){};
+	Fibo();
+	Fibo(const std::string&);
+	Fibo(const char*);
+	Fibo(int);
+	Fibo(const Fibo&);
 
 private:
 	boost::dynamic_bitset<> data;
@@ -95,13 +100,13 @@ private:
 };
 
 const Fibo& Zero() {
-//	static const Fibo zero(0);
-//	return zero;
+	static const Fibo zero(0);
+	return zero;
 }
 
 const Fibo& One() {
-//	static const Fibo zero(1);
-//	return zero;
+	static const Fibo zero(1);
+	return zero;
 }
 
 #endif //INC_3_FIBO_H
