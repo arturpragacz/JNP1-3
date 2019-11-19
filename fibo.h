@@ -103,14 +103,8 @@ private:
 	void trimLeadingZeroes();
 };
 
-const Fibo& Zero() {
-	static const Fibo zero(0);
-	return zero;
-}
+const Fibo& Zero();
 
-const Fibo& One() {
-	static const Fibo zero(1);
-	return zero;
-}
+const Fibo& One();
 
 #endif //INC_3_FIBO_H

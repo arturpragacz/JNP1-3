@@ -49,6 +49,17 @@ void Fibo::trimLeadingZeroes() {
 	data.resize(i + 1);
 }
 
+const Fibo& Zero() {
+	static const Fibo zero(0);
+	return zero;
+}
+
+const Fibo& One() {
+	static const Fibo zero(1);
+	return zero;
+}
+
 int main() {
 	Fibo f1(23), f2(12);
+	Fibo f3 = f1 + f2;
 }
