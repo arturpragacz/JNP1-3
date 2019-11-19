@@ -4,7 +4,7 @@
 #include <boost/dynamic_bitset.hpp>
 #include <boost/operators.hpp>
 #include <utility>
-#include <string>
+#include <string_view>
 
 class Fibo: boost::addable<Fibo>, boost::andable<Fibo>, boost::orable<Fibo>, boost::xorable<Fibo>,
             boost::left_shiftable<Fibo>, boost::less_than_comparable<Fibo>, boost::equality_comparable<Fibo> {
@@ -54,6 +54,7 @@ public:
 			data[0] = true;
 
 		normalize();
+		trimLeadingZeroes();
 	}
 	Fibo& operator&=(const Fibo& rhs) {
 		auto smaller = std::min({this->data.size(), rhs.data.size()});
@@ -85,16 +86,19 @@ public:
 		return data.size();
 	}
 
-	Fibo();
-	Fibo(const std::string&);
-	Fibo(const char*);
-	Fibo(int);
-	Fibo(const Fibo&);
+	Fibo() = default;
+//	Fibo(const Fibo&) = default;
+//	Fibo(Fibo&&) = default;
+//	Fibo& operator=(const Fibo&) = default;
+//	Fibo& operator=(Fibo&&) = default;
+	explicit Fibo(std::string_view s);
+	Fibo(int n);
 
 private:
 	boost::dynamic_bitset<> data;
 	using size_type = decltype(data)::size_type;
 	void normalize();
+	void trimLeadingZeroes();
 
 //	explicit Fibo(boost::dynamic_bitset<> d) : data(std::move(d)) {}
 };
