@@ -1,22 +1,24 @@
 #ifndef INC_3_FIBO_H
 #define INC_3_FIBO_H
 
+#include <iostream>
+#include <string_view>
+#include <algorithm>
 #include <boost/dynamic_bitset.hpp>
 #include <boost/operators.hpp>
-#include <utility>
-#include <string_view>
 
 class Fibo: boost::addable<Fibo>, boost::andable<Fibo>, boost::orable<Fibo>, boost::xorable<Fibo>,
             boost::left_shiftable<Fibo>, boost::less_than_comparable<Fibo>, boost::equality_comparable<Fibo> {
 public:
 	Fibo& operator+=(const Fibo& rhs) {
-		auto larger = std::max({data.size(), rhs.data.size()});
+		auto rhsDataSize = rhs.length();
+		auto larger = std::max({length(), rhsDataSize});
 		data.resize(larger + 1);
 
 		int carry = 0;
 		int suma;
 
-		for (size_type i = rhs.data.size() - 1; i >= 0; --i) {
+		for (size_type i = rhs.length(); i --> 0; ) {
 			suma = data[i] + rhs.data[i] + carry;
 			carry = 0;
 
@@ -54,9 +56,10 @@ public:
 			data[0] = true;
 
 		normalize();
+		return *this;
 	}
 	Fibo& operator&=(const Fibo& rhs) {
-		auto smaller = std::min({data.size(), rhs.data.size()});
+		auto smaller = std::min({length(), rhs.length()});
 		data.resize(smaller);
 		for (size_type i = 0; i != smaller; ++i)
 			data[i] &= rhs.data[i];
@@ -64,17 +67,17 @@ public:
 		return *this;
 	}
 	Fibo& operator|=(const Fibo& rhs) {
-		auto larger = std::max({data.size(), rhs.data.size()});
+		auto larger = std::max({length(), rhs.length()});
 		data.resize(larger);
-		for (size_type i = 0; i != rhs.data.size(); ++i)
+		for (size_type i = 0; i != rhs.length(); ++i)
 			data[i] |= rhs.data[i];
 		normalize();
 		return *this;
 	}
 	Fibo& operator^=(const Fibo& rhs) {
-		auto larger = std::max({data.size(), rhs.data.size()});
+		auto larger = std::max({length(), rhs.length()});
 		data.resize(larger);
-		for (size_type i = 0; i != rhs.data.size(); ++i)
+		for (size_type i = 0; i != rhs.length(); ++i)
 			data[i] ^= rhs.data[i];
 		normalize();
 		return *this;
@@ -83,6 +86,8 @@ public:
 		data <<= n;
 		return *this;
 	}
+	
+	friend std::ostream& operator<<(std::ostream& os, const Fibo& fibo);
 
 	size_t length() const {
 		return data.size();
