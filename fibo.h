@@ -52,7 +52,7 @@ public:
 		return *this;
 	}
 
-	size_t length() {
+	size_t length() const {
 		return data.size();
 	}
 
@@ -62,5 +62,15 @@ private:
 
 //	explicit Fibo(boost::dynamic_bitset<> d) : data(std::move(d)) {}
 };
+
+const Fibo& Zero() {
+//	static const Fibo zero(0);
+//	return zero;
+}
+
+const Fibo& One() {
+//	static const Fibo zero(1);
+//	return zero;
+}
 
 #endif //INC_3_FIBO_H
