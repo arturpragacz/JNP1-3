@@ -38,7 +38,9 @@ Fibo::Fibo(int n) {
 
 //normalizacja powinna trimować zera wiodące
 void Fibo::normalize() {
+	// TODO
 
+	trimLeadingZeroes();
 }
 
 void Fibo::trimLeadingZeroes() {

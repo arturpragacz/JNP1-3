@@ -54,31 +54,33 @@ public:
 			data[0] = true;
 
 		normalize();
-		trimLeadingZeroes();
 	}
 	Fibo& operator&=(const Fibo& rhs) {
-		auto smaller = std::min({this->data.size(), rhs.data.size()});
-		this->data.resize(smaller);
+		auto smaller = std::min({data.size(), rhs.data.size()});
+		data.resize(smaller);
 		for (size_type i = 0; i != smaller; ++i)
-			this->data[i] &= rhs.data[i];
+			data[i] &= rhs.data[i];
+		normalize();
 		return *this;
 	}
 	Fibo& operator|=(const Fibo& rhs) {
-		auto larger = std::max({this->data.size(), rhs.data.size()});
-		this->data.resize(larger);
+		auto larger = std::max({data.size(), rhs.data.size()});
+		data.resize(larger);
 		for (size_type i = 0; i != rhs.data.size(); ++i)
-			this->data[i] |= rhs.data[i];
+			data[i] |= rhs.data[i];
+		normalize();
 		return *this;
 	}
 	Fibo& operator^=(const Fibo& rhs) {
-		auto larger = std::max({this->data.size(), rhs.data.size()});
-		this->data.resize(larger);
+		auto larger = std::max({data.size(), rhs.data.size()});
+		data.resize(larger);
 		for (size_type i = 0; i != rhs.data.size(); ++i)
-			this->data[i] ^= rhs.data[i];
+			data[i] ^= rhs.data[i];
+		normalize();
 		return *this;
 	}
 	Fibo& operator<<=(size_t n) {
-		this->data <<= n;
+		data <<= n;
 		return *this;
 	}
 
