@@ -9,41 +9,69 @@ class Fibo: boost::addable<Fibo>, boost::andable<Fibo>, boost::orable<Fibo>, boo
             boost::left_shiftable<Fibo>, boost::less_than_comparable<Fibo>, boost::equality_comparable<Fibo> {
 public:
 	Fibo& operator+=(const Fibo& rhs) {
-		// TODO
+		auto larger = std::max({data.size(), rhs.data.size()});
+		data.resize(larger + 1);
+
+		int carry = 0;
+		int suma;
+
+		for (size_type i = rhs.data.size() - 1; i >= 0; --i) {
+			suma = data[i] + rhs.data[i] + carry;
+			carry = 0;
+
+			switch (suma) {
+				case -1: // -F[i] -> -F[i]
+					data[i + 1] = false; // +F[i+1] -> (F[i] + F[i-1]) - F[i] = F[i-1]
+					carry = 1; // -F[i-1] -> 0
+					data[i] = false; // +0 -> 0
+					break;
+
+				case 2: // +2F[i] -> 2F[i]
+					if (data[i + 1]) {
+						data[i + 1] = false; // +F[i+1] -> F[i+2] + F[i]
+						data[i + 2] = true; // -F[i+2] -> F[i]
+					}
+					else {
+						data [i + 1] = true; // -F[i+1] -> -(F[i] + F[i-1]) + 2F[i] = F[i] - F[i-1]
+						carry = -1; // +[i-1] -> F[i]
+					}
+					data[i] = true; // -F[i] -> 0
+					break;
+
+				case 3: // +3F[i] -> 3F[i]
+					data[i + 1] = true; // -F[i+1] -> -(F[i] + F[i-1]) + 3F[i] = 2F[i] - F[i-1]
+					data[i] = true; // -F[i] -> F[i] - F[i-1] = F[i-2]
+					i--;
+					carry = 1; // -F[i-2] -> 0
+					break;
+
+				default:
+					data[i] = suma;
+			}
+		}
+		if (carry)
+			data[0] = true;
+
+		normalize();
 	}
 	Fibo& operator&=(const Fibo& rhs) {
-		if (rhs.data.size() > this->data.size())
-			this->data.resize(rhs.data.size());
-		this->data &= rhs.data;
+		auto smaller = std::min({this->data.size(), rhs.data.size()});
+		this->data.resize(smaller);
+		for (size_type i = 0; i != smaller; ++i)
+			this->data[i] &= rhs.data[i];
 		return *this;
 	}
 	Fibo& operator|=(const Fibo& rhs) {
-		decltype(data)::size_type smaller, larger;
-		if (this->data.size() > rhs.data.size()) {
-			smaller = rhs.data.size();
-			larger = this->data.size();
-		}
-		else {
-			smaller = this->data.size();
-			larger = rhs.data.size();
-		}
+		auto larger = std::max({this->data.size(), rhs.data.size()});
 		this->data.resize(larger);
-		for (decltype(smaller) i = 0; i != smaller; ++i)
+		for (size_type i = 0; i != rhs.data.size(); ++i)
 			this->data[i] |= rhs.data[i];
 		return *this;
 	}
 	Fibo& operator^=(const Fibo& rhs) {
-		decltype(data)::size_type smaller, larger;
-		if (this->data.size() > rhs.data.size()) {
-			smaller = rhs.data.size();
-			larger = this->data.size();
-		}
-		else {
-			smaller = this->data.size();
-			larger = rhs.data.size();
-		}
+		auto larger = std::max({this->data.size(), rhs.data.size()});
 		this->data.resize(larger);
-		for (decltype(smaller) i = 0; i != smaller; ++i)
+		for (size_type i = 0; i != rhs.data.size(); ++i)
 			this->data[i] ^= rhs.data[i];
 		return *this;
 	}
@@ -56,8 +84,11 @@ public:
 		return data.size();
 	}
 
+	Fibo(){};
+
 private:
 	boost::dynamic_bitset<> data;
+	using size_type = decltype(data)::size_type;
 	void normalize();
 
 //	explicit Fibo(boost::dynamic_bitset<> d) : data(std::move(d)) {}
