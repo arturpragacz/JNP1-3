@@ -94,13 +94,11 @@ public:
 	explicit Fibo(std::string_view s);
 	Fibo(int n);
 
-	boost::dynamic_bitset<> data;
 private:
+	boost::dynamic_bitset<> data;
 	using size_type = decltype(data)::size_type;
 	void normalize();
 	void trimLeadingZeroes();
-
-//	explicit Fibo(boost::dynamic_bitset<> d) : data(std::move(d)) {}
 };
 
 const Fibo& Zero() {
