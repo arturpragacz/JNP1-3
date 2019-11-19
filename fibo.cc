@@ -17,22 +17,20 @@ Fibo::Fibo(int n) {
 	assert(n >= 0);
 	if (n > 0) {
 		int f1 = 1, f2 = 2, i = 1;
-		while (f2 <= n) {
-			int helper = f2;
-			f2 += f1;
-			f1 = helper;
-			i++;
+		for (; f2 <= n; ++i) {
+			int tmp = f2;
+			f2 = f2 + f1;
+			f1 = tmp;
 		}
-		data = boost::dynamic_bitset<>(i);
-		while (n > 0) {
+		data.resize(i);
+		for (--i; n > 0; --i) {
 			if (f1 <= n) {
 				data[i] = true;
 				n -= f1;
 			}
-			i--;
-			int helper = f1;
+			int tmp = f1;
 			f1 = f2 - f1;
-			f2 = f1;
+			f2 = tmp;
 		}
 	}
 }
@@ -50,6 +48,5 @@ void Fibo::trimLeadingZeroes() {
 }
 
 int main() {
-	Fibo f;
-	std::cout << f.length();
+	Fibo f1(23), f2(12);
 }
