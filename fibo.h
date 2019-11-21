@@ -46,6 +46,8 @@ public:
 
 	Fibo(wchar_t) = delete;
 
+	// default copy and move constructors and assignments
+
 
 	Fibo& operator+=(const Fibo& rhs);
 
