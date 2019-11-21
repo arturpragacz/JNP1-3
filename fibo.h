@@ -10,19 +10,19 @@
 class Fibo: boost::addable<Fibo>, boost::bitwise<Fibo>,
             boost::left_shiftable<Fibo, size_t>, boost::totally_ordered<Fibo> {
 public:
-    Fibo() = default;
+	Fibo() = default;
 
 	Fibo(const Fibo&) = default;
 
 	Fibo(Fibo&&) = default;
 
-    explicit Fibo(std::string_view s);
+	explicit Fibo(std::string_view s);
 
-    Fibo(long long int n);
+	Fibo(long long int n);
 
-    Fibo& operator=(const Fibo&) = default;
+	Fibo& operator=(const Fibo&) = default;
 
-    Fibo& operator=(Fibo&&) = default;
+	Fibo& operator=(Fibo&&) = default;
 
 	Fibo& operator+=(const Fibo& rhs);
 
@@ -34,11 +34,11 @@ public:
 
 	Fibo& operator<<=(size_t n);
 
-    friend bool operator<(const Fibo& lhs, const Fibo& rhs);
+	friend bool operator<(const Fibo& lhs, const Fibo& rhs);
 
-    friend bool operator==(const Fibo& lhs, const Fibo& rhs);
+	friend bool operator==(const Fibo& lhs, const Fibo& rhs);
 
-    friend std::ostream& operator<<(std::ostream& os, const Fibo& fibo);
+	friend std::ostream& operator<<(std::ostream& os, const Fibo& fibo);
 
 	size_t length() const;
 
