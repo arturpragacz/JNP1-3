@@ -13,6 +13,7 @@ public:
 	Fibo() = default;
 
 	explicit Fibo(std::string_view s);
+	explicit Fibo(const char* s) : Fibo(s ? std::string_view(s) : std::string_view()) {}
 
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, int> = 0 >
 	Fibo(T n) {
@@ -38,12 +39,8 @@ public:
 		}
 	}
 
-	template <typename T, std::enable_if_t<std::is_same_v<T, bool>, int> = 0 >
-	Fibo(T) = delete;
-
-	template <typename T, std::enable_if_t<std::is_same_v<T, char>, int> = 0 >
-	Fibo(T) = delete;
-
+	Fibo(bool) = delete;
+	Fibo(char) = delete;
 	Fibo(wchar_t) = delete;
 
 	// default copy and move constructors and assignments

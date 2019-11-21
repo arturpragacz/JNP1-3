@@ -3,7 +3,7 @@
 #include <algorithm>
 
 Fibo::Fibo(std::string_view s) {
-	assert(s.begin());
+	assert(s.size());
 	assert(*s.begin() != '0');
 	for (size_t i = s.length(); i --> 0; ) {
 		assert(s[i] == '1' || s[i] == '0');
