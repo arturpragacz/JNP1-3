@@ -12,17 +12,10 @@ class Fibo: boost::addable<Fibo>, boost::bitwise<Fibo>,
 public:
 	Fibo() = default;
 
-	Fibo(const Fibo&) = default;
-
-	Fibo(Fibo&&) = default;
-
 	explicit Fibo(std::string_view s);
 
 	Fibo(long long int n);
 
-	Fibo& operator=(const Fibo&) = default;
-
-	Fibo& operator=(Fibo&&) = default;
 
 	Fibo& operator+=(const Fibo& rhs);
 

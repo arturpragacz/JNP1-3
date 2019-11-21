@@ -32,6 +32,7 @@ Fibo::Fibo(long long int n) {
 	}
 }
 
+
 Fibo& Fibo::operator+=(const Fibo& rhs) {
 	auto rhsDataSize = rhs.length();
 	auto larger = std::max({length(), rhsDataSize});
@@ -126,7 +127,6 @@ bool operator==(const Fibo& lhs, const Fibo& rhs) {
 	return lhs.data == rhs.data;
 }
 
-
 bool operator<(const Fibo& lhs, const Fibo& rhs) {
 	if (lhs.length() != rhs.length())
 		return lhs.length() < rhs.length();
@@ -138,9 +138,11 @@ bool operator<(const Fibo& lhs, const Fibo& rhs) {
 	return false;
 }
 
+
 size_t Fibo::length() const {
 	return data.size();
 }
+
 
 void Fibo::normalize() {
 	for (Fibo::size_type i = length() - 1; i --> 0; ) {
@@ -182,6 +184,7 @@ void Fibo::trimLeadingZeroes() {
 	}
 	data.resize(i + 1);
 }
+
 
 const Fibo& Zero() {
 	static const Fibo zero(0);
