@@ -42,7 +42,6 @@ public:
 
 	Fibo(bool) = delete;
 	Fibo(char) = delete;
-	Fibo(wchar_t) = delete;
 
 	// default copy and move constructors and assignments
 
