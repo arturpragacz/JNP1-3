@@ -3,9 +3,9 @@
 
 #include <iostream>
 #include <string_view>
-#include <algorithm>
 #include <boost/dynamic_bitset.hpp>
 #include <boost/operators.hpp>
+#include <type_traits>
 
 class Fibo: boost::addable<Fibo>, boost::bitwise<Fibo>,
             boost::left_shiftable<Fibo, size_t>, boost::totally_ordered<Fibo> {
@@ -14,7 +14,37 @@ public:
 
 	explicit Fibo(std::string_view s);
 
-	Fibo(long long int n);
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, int> = 0 >
+	Fibo(T n) {
+		assert(n >= 0);
+		if (n > 0) {
+			long long int f1 = 1, f2 = 2;
+			size_t i = 1;
+			for (; f2 <= n; ++i) {
+				long long int tmp = f2;
+				f2 = f2 + f1;
+				f1 = tmp;
+			}
+			data.resize(i);
+			for (--i; n > 0; --i) {
+				if (f1 <= n) {
+					data[i] = true;
+					n -= f1;
+				}
+				long long int tmp = f1;
+				f1 = f2 - f1;
+				f2 = tmp;
+			}
+		}
+	}
+
+	template <typename T, std::enable_if_t<std::is_same_v<T, bool>, int> = 0 >
+	Fibo(T) = delete;
+
+	template <typename T, std::enable_if_t<std::is_same_v<T, char>, int> = 0 >
+	Fibo(T) = delete;
+
+	Fibo(wchar_t) = delete;
 
 
 	Fibo& operator+=(const Fibo& rhs);

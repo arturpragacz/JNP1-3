@@ -1,35 +1,15 @@
 #include "fibo.h"
 
+#include <algorithm>
+
 Fibo::Fibo(std::string_view s) {
+	assert(s.begin());
 	assert(*s.begin() != '0');
 	for (size_t i = s.length(); i --> 0; ) {
 		assert(s[i] == '1' || s[i] == '0');
 		data.push_back(s[i] == '1');
 	}
 	normalize();
-}
-
-Fibo::Fibo(long long int n) {
-	assert(n >= 0);
-	if (n > 0) {
-		long long int f1 = 1, f2 = 2;
-		size_t i = 1;
-		for (; f2 <= n; ++i) {
-			long long int tmp = f2;
-			f2 = f2 + f1;
-			f1 = tmp;
-		}
-		data.resize(i);
-		for (--i; n > 0; --i) {
-			if (f1 <= n) {
-				data[i] = true;
-				n -= f1;
-			}
-			long long int tmp = f1;
-			f1 = f2 - f1;
-			f2 = tmp;
-		}
-	}
 }
 
 
