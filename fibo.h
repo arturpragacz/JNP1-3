@@ -19,23 +19,24 @@ public:
 	Fibo(T n) {
 		assert(n >= 0);
 		if (n > 0) {
-			long long int f1 = 1, f2 = 2;
-			size_t i = 1;
-			for (; f2 <= n; ++i) {
-				long long int tmp = f2;
+			T f1 = 1, f2 = 2;
+			size_t i = 2;
+			for (; f2 <= n - f1; ++i) {
+				T tmp = f2;
 				f2 = f2 + f1;
 				f1 = tmp;
 			}
 			data.resize(i);
 			for (--i; n > 0; --i) {
-				if (f1 <= n) {
+				if (f2 <= n) {
 					data[i] = true;
-					n -= f1;
+					n -= f2;
 				}
-				long long int tmp = f1;
+				T tmp = f1;
 				f1 = f2 - f1;
 				f2 = tmp;
 			}
+			trimLeadingZeroes();
 		}
 	}
 
