@@ -12,14 +12,17 @@ class Fibo: boost::addable<Fibo>, boost::bitwise<Fibo>,
 public:
     Fibo() = default;
 
+	Fibo(const Fibo&) = default;
+
+	Fibo(Fibo&&) = default;
+
     explicit Fibo(std::string_view s);
 
     Fibo(long long int n);
 
-//	Fibo(const Fibo&) = default;
-//	Fibo(Fibo&&) = default;
-//	Fibo& operator=(const Fibo&) = default;
-//	Fibo& operator=(Fibo&&) = default;
+    Fibo& operator=(const Fibo&) = default;
+
+    Fibo& operator=(Fibo&&) = default;
 
 	Fibo& operator+=(const Fibo& rhs);
 
@@ -41,6 +44,7 @@ private:
 	boost::dynamic_bitset<> data;
 	using size_type = decltype(data)::size_type;
 	void normalize();
+	void moveFibitOnSuffix(size_type suffixBegin) ;
 	void trimLeadingZeroes();
 };
 

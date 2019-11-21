@@ -139,9 +139,35 @@ size_t Fibo::length() const {
 }
 
 void Fibo::normalize() {
-	// TODO
+    for (Fibo::size_type i = length() - 1; i --> 0; ) {
+        if (data[i] && data[i + 1]) {
+            data[i] = false;
+            data[i + 1] = false;
+            if (length() > i + 2) {
+                data[i + 2] = true;
+                moveFibitOnSuffix(i + 2);
+            } else {
+                data.append(true);
+            }
+        }
+    }
 
 	trimLeadingZeroes();
+}
+
+void Fibo::moveFibitOnSuffix(size_type suffixBegin) {
+    size_type i = suffixBegin;
+    while (i + 1 < length() && data[i + 1]) {
+        data[i] = false;
+        data[i + 1] = false;
+        if (length() > i + 2) {
+            data[i + 2] = true;
+            moveFibitOnSuffix(i + 2);
+        } else {
+            data.append(true);
+        }
+        i += 2;
+    }
 }
 
 void Fibo::trimLeadingZeroes() {
