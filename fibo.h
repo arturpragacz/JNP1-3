@@ -34,9 +34,11 @@ public:
 
 	Fibo& operator<<=(size_t n);
 
-	bool operator<(const Fibo& rhs);
+    friend bool operator<(const Fibo& lhs, const Fibo& rhs);
 
-	friend std::ostream& operator<<(std::ostream& os, const Fibo& fibo);
+    friend bool operator==(const Fibo& lhs, const Fibo& rhs);
+
+    friend std::ostream& operator<<(std::ostream& os, const Fibo& fibo);
 
 	size_t length() const;
 

@@ -110,25 +110,29 @@ Fibo& Fibo::operator^=(const Fibo& rhs) {
 
 Fibo& Fibo::operator<<=(size_t n) {
     data.resize(length() + n);
-    data >>= n;
+    data <<= n;
     return *this;
 }
 
 std::ostream& operator<<(std::ostream& os, const Fibo& fibo) {
-	if (fibo.length())
-		for (Fibo::size_type i = fibo.length(); i --> 0; )
-			os << fibo.data[i];
+	if (fibo.length() > 0)
+	    os << fibo.data;
 	else
 		os << "0";
 	return os;
 }
 
-bool Fibo::operator<(const Fibo& rhs) {
-    if (length() != rhs.length())
-        return length() < rhs.length();
-    size_type i = length();
+bool operator==(const Fibo& lhs, const Fibo& rhs) {
+    return lhs.data == rhs.data;
+}
+
+
+bool operator<(const Fibo& lhs, const Fibo& rhs) {
+    if (lhs.length() != rhs.length())
+        return lhs.length() < rhs.length();
+    Fibo::size_type i = lhs.length();
     while(i --> 0) {
-        if (data[i] < rhs.data[i])
+        if (lhs.data[i] < rhs.data[i])
             return true;
     }
     return false;
@@ -187,10 +191,4 @@ const Fibo& Zero() {
 const Fibo& One() {
 	static const Fibo one(1);
 	return one;
-}
-
-int main() {
-	Fibo f1(23), f2(12);
-	Fibo f3 = f1 + f2;
-	std::cout << f3 << std::endl;
 }
