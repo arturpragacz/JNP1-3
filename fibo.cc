@@ -75,8 +75,10 @@ Fibo& Fibo::operator+=(const Fibo& rhs) {
 				data[i] = sum;
 		}
 	}
-	if (carry)
+	if (carry == 1)
 		data[0] = true;
+	else if (carry == -1)
+		data[0] = false;
 
 	normalize();
 	return *this;
