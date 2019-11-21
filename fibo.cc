@@ -34,8 +34,7 @@ Fibo::Fibo(long long int n) {
 
 
 Fibo& Fibo::operator+=(const Fibo& rhs) {
-	auto rhsDataSize = rhs.length();
-	auto larger = std::max({length(), rhsDataSize});
+	auto larger = std::max({length(), rhs.length()});
 	data.resize(larger + 1);
 
 	int carry = 0;
@@ -67,7 +66,8 @@ Fibo& Fibo::operator+=(const Fibo& rhs) {
 			case 3: // +3F[i] -> 3F[i]
 				data[i + 1] = true; // -F[i+1] -> -(F[i] + F[i-1]) + 3F[i] = 2F[i] - F[i-1]
 				data[i] = true; // -F[i] -> F[i] - F[i-1] = F[i-2]
-				i--;
+				if (i > 0)
+					i--;
 				carry = 1; // -F[i-2] -> 0
 				break;
 
@@ -117,14 +117,6 @@ Fibo& Fibo::operator<<=(size_t n) {
 	return *this;
 }
 
-std::ostream& operator<<(std::ostream& os, const Fibo& fibo) {
-	if (fibo.length() > 0)
-		os << fibo.data;
-	else
-		os << "0";
-	return os;
-}
-
 bool operator==(const Fibo& lhs, const Fibo& rhs) {
 	return lhs.data == rhs.data;
 }
@@ -136,8 +128,18 @@ bool operator<(const Fibo& lhs, const Fibo& rhs) {
 	while(i --> 0) {
 		if (lhs.data[i] < rhs.data[i])
 			return true;
+		else if (lhs.data[i] > rhs.data[i])
+			return false;
 	}
 	return false;
+}
+
+std::ostream& operator<<(std::ostream& os, const Fibo& fibo) {
+	if (fibo.length() > 0)
+		os << fibo.data;
+	else
+		os << "0";
+	return os;
 }
 
 
@@ -147,35 +149,26 @@ size_t Fibo::length() const {
 
 
 void Fibo::normalize() {
-	for (Fibo::size_type i = length() - 1; i --> 0; ) {
+	data.resize(length() + 1);
+	for (Fibo::size_type i = length() - 2; i --> 0; ) {
 		if (data[i] && data[i + 1]) {
-			data[i] = false;
-			data[i + 1] = false;
-			if (length() > i + 2) {
-				data[i + 2] = true;
-				moveFibitOnSuffix(i + 2);
-			} else {
-				data.append(true);
-			}
+			coalesceOnes(i);
+			carryFibitToPrefix(i + 2);
 		}
 	}
 
 	trimLeadingZeroes();
 }
 
-void Fibo::moveFibitOnSuffix(size_type suffixBegin) {
-	size_type i = suffixBegin;
-	while (i + 1 < length() && data[i + 1]) {
-		data[i] = false;
-		data[i + 1] = false;
-		if (length() > i + 2) {
-			data[i + 2] = true;
-			moveFibitOnSuffix(i + 2);
-		} else {
-			data.append(true);
-		}
-		i += 2;
-	}
+void Fibo::carryFibitToPrefix(size_type prefixEnd) {
+	for (size_type i = prefixEnd; i + 2 < length() && data[i + 1]; i += 2)
+		coalesceOnes(i);
+}
+
+void Fibo::coalesceOnes(size_type i) {
+	data[i + 2] = true;
+	data[i + 1] = false;
+	data[i] = false;
 }
 
 void Fibo::trimLeadingZeroes() {

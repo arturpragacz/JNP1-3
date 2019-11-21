@@ -33,13 +33,17 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& os, const Fibo& fibo);
 
+
 	size_t length() const;
+
 
 private:
 	boost::dynamic_bitset<> data;
 	using size_type = decltype(data)::size_type;
+
 	void normalize();
-	void moveFibitOnSuffix(size_type suffixBegin) ;
+	void carryFibitToPrefix(size_type prefixEnd);
+	void coalesceOnes(size_type i);
 	void trimLeadingZeroes();
 };
 
