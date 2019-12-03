@@ -10,7 +10,7 @@
 class Fibo: boost::addable<Fibo>, boost::bitwise<Fibo>,
             boost::left_shiftable<Fibo, size_t>, boost::totally_ordered<Fibo> {
 public:
-	Fibo() = default;
+	Fibo() { trimLeadingZeroes(); }
 
 	explicit Fibo(std::string_view s);
 	explicit Fibo(const char* s) : Fibo(s ? std::string_view(s) : std::string_view()) {}
@@ -36,8 +36,8 @@ public:
 				f1 = f2 - f1;
 				f2 = tmp;
 			}
-			trimLeadingZeroes();
 		}
+		trimLeadingZeroes();
 	}
 
 	Fibo(bool) = delete;

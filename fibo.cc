@@ -4,7 +4,7 @@
 
 Fibo::Fibo(std::string_view s) {
 	assert(s.size());
-	assert(*s.begin() != '0');
+	assert(*s.begin() != '0' || s.size() == 1);
 	for (size_t i = s.length(); i --> 0; ) {
 		assert(s[i] == '1' || s[i] == '0');
 		data.push_back(s[i] == '1');
@@ -94,6 +94,7 @@ Fibo& Fibo::operator^=(const Fibo& rhs) {
 Fibo& Fibo::operator<<=(size_t n) {
 	data.resize(length() + n);
 	data <<= n;
+	trimLeadingZeroes();
 	return *this;
 }
 
@@ -157,6 +158,7 @@ void Fibo::trimLeadingZeroes() {
 		if (data[i])
 			break;
 	}
+	if (i + 1 == 0) i++;
 	data.resize(i + 1);
 }
 
